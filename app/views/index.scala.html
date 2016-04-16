@@ -2,29 +2,19 @@
 
 @main(title = "Index page") {
     <div class="container">
-        <h1>Home page</h1>
-        <p> @message - My email is user@@example.com</p>
-        <form method="POST" action="@routes.Application.login" >
-            <input name="name" type="text" placeholder="Username">
-            <button type="submit" id="myButton" class="btn btn-primary">Login</button>
+        <h1>API</h1>
+        <pre>
+            GET     /games
+            GET     /game?id=3
+            POST    /game
+        </pre>
+        <h3><a href="/games">GET /games</a></h3>
+        <h3><a href="/game?id=0">GET /game?id=0</a></h3>
+        <h3>POST /game</h3>
+        <form method="POST" action="@routes.Application.addGame" enctype="multipart/form-data" >
+            <input name="data" type="text" placeholder="JSON data string">
+            <input name="photo" type="file" >
+            <button type="submit" class="btn btn-primary">Login</button>
         </form>
-        <!-- File Upload:
-            <form method="POST" enctype="multipart/form-data" >
-                <input type="file" name="profilePicture">
-            </form>
-        -->
     </div>
-    <!-- more examples: (but replace @@ by single (at) first)
-        Longer code: @@{val name = customer.firstName + customer.lastName; name}!
-        List:
-        <ul>
-            @@for(item <- items) {
-                @@if(item.isEmpty) {
-                    <li>It is empty</li>
-                } else {
-                    <li>@@item.name</li>
-                }
-            }
-        </ul>
-    -->
 }

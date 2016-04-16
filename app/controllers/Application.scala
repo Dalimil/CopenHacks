@@ -15,17 +15,29 @@ class Application @Inject() () extends Controller {
     Ok(views.html.index("Your new application is ready")) // Send an html template
   }
 
-
   def getGames = TODO
+
   def getGame(id: Long) = TODO
-  def addGame = TODO
-  def showUser(name: String) = Action {
-    val jsonVal: JsValue = Json.parse("""{"name": "Watership Down", "location": {"lat" : 51.23, "lng": -1.30}}""")
+
+  def addGame = Action(parse.multipartFormData) { implicit request =>
+    val newGameData = newGameForm.bindFromRequest.get.data // request is implicit
+    Logger.debug(newGameData)
+    val photo = request.body.file("photo").get
+    val filename = photo.filename
+    photo.ref.moveTo(new java.io.File(s"/tmp/pictures/$filename"))
+
+    val jsonVal: JsValue = Json.parse(newGameData)
     val minifiedString: String = Json.stringify(jsonVal)
     val readableString: String = Json.prettyPrint(jsonVal)
-    Ok("Hi: "+name+" --- "+readableString)
+    Ok("File: "+ filename +" --- "+readableString)
   }
 
+  case class FormGameData(data: String)
+  val newGameForm: Form[FormGameData] = Form(
+    mapping(
+      "data" -> nonEmptyText,
+    )(FormGameData.apply)(FormGameData.unapply) // to transform the data into an instance of our case class
+  )
 
 }
 
