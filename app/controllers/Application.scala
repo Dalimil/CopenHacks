@@ -34,7 +34,7 @@ class Application @Inject() () extends Controller {
     val photo = request.body.file("photo").get
     val filename = getFileName(getExtension(photo.filename))
     Logger.debug("new dirs: " + new java.io.File("./public/storage/").mkdirs())
-    photo.ref.moveTo(new java.io.File(s"./public/storage/$filename"))
+    photo.ref.moveTo(new java.io.File(s"/tmp/$filename"))
     val newGame = Game(filename, newGameData)
     Db.save(newGame)
 
