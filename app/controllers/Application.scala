@@ -34,7 +34,8 @@ class Application @Inject() () extends Controller {
     val photo = request.body.file("photo").get
     val filename = getFileName(getExtension(photo.filename))
     photo.ref.moveTo(new java.io.File(s"./public/storage/$filename"))
-    Db.save(Game(filename, newGameData))
+    val newGame = Game(filename, newGameData)
+    Db.save(newGame)
 
     val jsonVal: JsValue = Json.parse(newGameData)
     val minifiedString: String = Json.stringify(jsonVal)
