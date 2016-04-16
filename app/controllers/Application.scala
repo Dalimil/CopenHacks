@@ -34,7 +34,7 @@ class Application @Inject() () extends Controller {
     val photo = request.body.file("photo").get
     val filename = getFileName(getExtension(photo.filename))
     Logger.debug("new dirs: " + new java.io.File("./public/storage/").mkdirs())
-    photo.ref.moveTo(new java.io.File(s"/tmp/$filename"))
+    photo.ref.moveTo(new java.io.File(s"./public/storage/$filename"))
     val newGame = Game(filename, newGameData)
     Db.save(newGame)
 
@@ -45,7 +45,7 @@ class Application @Inject() () extends Controller {
   }
 
   def debug = Action {
-    Ok(new java.io.File(".").getAbsoluteFile)
+    Ok(new java.io.File(".").getAbsolutePath)
   }
 
   def getExtension(name: String): String = {
