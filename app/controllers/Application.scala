@@ -23,7 +23,8 @@ class Application @Inject() () extends Controller {
     val result: JsObject = Json.obj("games" -> games.toList.map {
       case (s, v) => Json.obj("assets/"+s -> Json.parse(v))
     })
-    Ok(Json.prettyPrint(result))
+    Logger.debug(Json.prettyPrint(result))
+    Ok(result)
   }
 
   def addGame = Action(parse.multipartFormData) { implicit request =>
@@ -50,9 +51,9 @@ class Application @Inject() () extends Controller {
   }
 
   def getFileName(extension: String): String = {
-    var name = Random.nextInt(1000000).toString + extension
+    var name = Random.nextInt(1000000).toString + "." + extension
     while(games.contains(name)) {
-      name = Random.nextInt(1000000).toString + extension
+      name = Random.nextInt(1000000).toString + "." + extension
     }
     name
   }
