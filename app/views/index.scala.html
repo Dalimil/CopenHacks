@@ -4,17 +4,19 @@
     <div class="container">
         <h1>API</h1>
         <pre>
-            GET     /games
-            GET     /game?id=3
-            POST    /game
+GET     /games
+GET     /game?id=3
+POST    /game
         </pre>
         <h3><a href="/games">GET /games</a></h3>
         <h3><a href="/game?id=0">GET /game?id=0</a></h3>
         <h3>POST /game</h3>
         <form method="POST" action="@routes.Application.addGame" enctype="multipart/form-data" >
             <input name="data" type="text" placeholder="JSON data string">
-            <input name="photo" type="file" >
-            <button type="submit" class="btn btn-primary">Login</button>
+            {"lat":50, "lng": 10, "platforms":[{"x":0.2, "y":0.7, "w":0.3},{"x":0.5, "y":0.4, "w":0.6}]}<br />
+            <br />
+            <input name="photo" type="file" ><br />
+            <button type="submit" class="btn btn-primary">Add a new game</button>
         </form>
     </div>
 }

@@ -6,7 +6,6 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.libs.json._
 import play.api.mvc._
-import utils.{HttpClient, Scheduler}
 
 class Application @Inject() () extends Controller {
 
@@ -34,9 +33,7 @@ class Application @Inject() () extends Controller {
 
   case class FormGameData(data: String)
   val newGameForm: Form[FormGameData] = Form(
-    mapping(
-      "data" -> nonEmptyText,
-    )(FormGameData.apply)(FormGameData.unapply) // to transform the data into an instance of our case class
+    mapping("data" -> nonEmptyText)(FormGameData.apply)(FormGameData.unapply) // transform to our case class
   )
 
 }
