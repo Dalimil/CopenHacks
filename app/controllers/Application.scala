@@ -33,8 +33,11 @@ class Application @Inject() () extends Controller {
     Logger.debug(newGameData)
     val photo = request.body.file("photo").get
     val filename = getFileName(getExtension(photo.filename))
-    Logger.debug("new dirs: " + new java.io.File("./public/storage/").mkdirs())
-    photo.ref.moveTo(new java.io.File(s"./public/storage/$filename"))
+    val path = if(play.api.Play.isProd(play.api.Play.current)){
+      "../public/storage/"
+    } else "./public/storage/"
+    Logger.debug("New dirs: " + new java.io.File(path).mkdirs())
+    photo.ref.moveTo(new java.io.File(s"$path$filename"))
     val newGame = Game(filename, newGameData)
     Db.save(newGame)
 
@@ -42,10 +45,6 @@ class Application @Inject() () extends Controller {
     val minifiedString: String = Json.stringify(jsonVal)
     val readableString: String = Json.prettyPrint(jsonVal)
     Ok("File: "+ filename +" --- "+readableString)
-  }
-
-  def debug = Action {
-    Ok(new java.io.File(".").getAbsolutePath)
   }
 
   def getExtension(name: String): String = {
