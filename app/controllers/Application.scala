@@ -22,7 +22,7 @@ class Application @Inject() () extends Controller {
   def getGames = Action {
     val games = Db.query[Game].fetch
     val result: JsObject = Json.obj("games" -> games.toList.map {
-      g => Json.obj("assets/"+g.name -> Json.parse(g.config))
+      g => Json.obj("url" -> Json.toJson("assets/"+g.name), "config" -> Json.parse(g.config))
     })
     Logger.debug(Json.prettyPrint(result))
     Ok(result)
