@@ -3,6 +3,7 @@ package controllers
 import java.io.File
 
 import com.google.inject.Inject
+import models.{Db, Game}
 import play.api.Logger
 import play.api.data.Form
 import play.api.data.Forms._
@@ -12,7 +13,6 @@ import play.api.mvc._
 import scala.util.Random
 
 class Application @Inject() () extends Controller {
-  var games:Map[String, String] = Map()
 
   def index = Action { implicit request => // Make implicit to be able to use it later
     Logger.debug(new File(".").getCanonicalPath)
@@ -20,8 +20,9 @@ class Application @Inject() () extends Controller {
   }
 
   def getGames = Action {
+    val games = Db.query[Game].fetch
     val result: JsObject = Json.obj("games" -> games.toList.map {
-      case (s, v) => Json.obj("assets/"+s -> Json.parse(v))
+      g => Json.obj("assets/"+g.name -> Json.parse(g.config))
     })
     Logger.debug(Json.prettyPrint(result))
     Ok(result)
@@ -33,7 +34,7 @@ class Application @Inject() () extends Controller {
     val photo = request.body.file("photo").get
     val filename = getFileName(getExtension(photo.filename))
     photo.ref.moveTo(new java.io.File(s"./public/storage/$filename"))
-    games = games + (filename -> newGameData)
+    Db.save(Game(filename, newGameData))
 
     val jsonVal: JsValue = Json.parse(newGameData)
     val minifiedString: String = Json.stringify(jsonVal)
@@ -52,7 +53,7 @@ class Application @Inject() () extends Controller {
 
   def getFileName(extension: String): String = {
     var name = Random.nextInt(1000000).toString + "." + extension
-    while(games.contains(name)) {
+    while(Db.query[Game].whereEqual("name", name).exists()) {
       name = Random.nextInt(1000000).toString + "." + extension
     }
     name
