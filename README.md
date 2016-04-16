@@ -1,10 +1,5 @@
-# Scala-Play-Quickstart
-Basic Scala web application using the Play Framework
+# CopenHacks
+#### CopenHacks hackathon - Copenhagen 16-17th April
 
-https://playframework.com/documentation/2.5.x/Home
+This is the backend part of the project...
 
-### TODO
-- [ ] Database and ORM
-- [ ] WebSockets example with channels/rooms
-- [ ] Find a JSON package that can convert Map[String, Any] <-> String (Json format)
-    - [ ] GSON in Scala?
