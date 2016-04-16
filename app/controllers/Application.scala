@@ -44,6 +44,10 @@ class Application @Inject() () extends Controller {
     Ok("File: "+ filename +" --- "+readableString)
   }
 
+  def debug = Action {
+    Ok(new java.io.File(".").getAbsoluteFile)
+  }
+
   def getExtension(name: String): String = {
     val dot = name.lastIndexOf(".")
     if(dot > 0) {
