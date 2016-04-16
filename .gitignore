@@ -20,3 +20,4 @@ server.pid
 /.project
 /.settings
 /RUNNING_PID
+/public/storage
