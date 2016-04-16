@@ -12,24 +12,25 @@ import play.api.mvc._
 import scala.util.Random
 
 class Application @Inject() () extends Controller {
-  var games:Map[String, Any] = Map()
+  var games:Map[String, String] = Map()
 
   def index = Action { implicit request => // Make implicit to be able to use it later
-    Logger.debug {
-      new File(".").getCanonicalPath()
-    }
+    Logger.debug(new File(".").getCanonicalPath)
     Ok(views.html.index("API")) // Send an html template
   }
 
-  def getGames = TODO
-
-  def getGame(id: Long) = TODO
+  def getGames = Action {
+    val result: JsObject = Json.obj("games" -> games.toList.map {
+      case (s, v) => Json.obj("assets/"+s -> Json.parse(v))
+    })
+    Ok(Json.prettyPrint(result))
+  }
 
   def addGame = Action(parse.multipartFormData) { implicit request =>
     val newGameData = newGameForm.bindFromRequest.get.data // request is implicit
     Logger.debug(newGameData)
     val photo = request.body.file("photo").get
-    val filename = getFileName() + "." + getExtension(photo.filename)
+    val filename = getFileName(getExtension(photo.filename))
     photo.ref.moveTo(new java.io.File(s"./public/storage/$filename"))
     games = games + (filename -> newGameData)
 
@@ -48,10 +49,10 @@ class Application @Inject() () extends Controller {
     }
   }
 
-  def getFileName(): String = {
-    var name = Random.nextInt(1000000).toString
+  def getFileName(extension: String): String = {
+    var name = Random.nextInt(1000000).toString + extension
     while(games.contains(name)) {
-      name = Random.nextInt(1000000).toString
+      name = Random.nextInt(1000000).toString + extension
     }
     name
   }
