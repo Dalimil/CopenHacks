@@ -7,6 +7,6 @@ case class Game(name: String, config: String)
 import sorm._
 object Db extends Instance(
   entities = Set(Entity[Game]()),
-  url = "jdbc:h2:mem:test"
+  url = "jdbc:h2:/tmp/test-db"
 )
 
