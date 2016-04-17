@@ -47,6 +47,15 @@ class Application @Inject() () extends Controller {
     Ok("File: "+ filename +" --- "+readableString)
   }
 
+  def delete(id: String) = Action {
+    if(id.isEmpty){
+      Db.query[Game].fetch.foreach(Db.delete[Game])
+    } else {
+      Db.query[Game].whereEqual("name", id).fetch.foreach(Db.delete[Game])
+    }
+    Ok("Deleted "+id)
+  }
+
   def getExtension(name: String): String = {
     val dot = name.lastIndexOf(".")
     if(dot > 0) {
