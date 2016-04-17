@@ -4,5 +4,5 @@
 
 It was deployed on Microsoft Azure IaaS
 
-![Main menu](https://github.com/Dalimil/CopenHacks/screenshots/blob/master/menu.jpg)
-![Gameplay](https://github.com/Dalimil/CopenHacks/screenshots/blob/master/gameplay.jpg)
+![Main menu](https://github.com/Dalimil/CopenHacks/blob/master/screenshots/menu.jpg)
+![Gameplay](https://github.com/Dalimil/CopenHacks/blob/master/screenshots/gameplay.jpg)
